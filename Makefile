@@ -2,7 +2,7 @@
 #
 # Makefile for list implementation and test file.
 #
-# <Author>
+# Amir Ince
 
 list: list.c main.c 
 	gcc list.c main.c -o list.exe
