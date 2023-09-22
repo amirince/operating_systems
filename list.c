@@ -18,6 +18,7 @@ list_t *list_alloc() {
 
 void list_free(list_t *l) {
   node_t* curr = l->head;
+  l->head = NULL;
   node_t *tmp = NULL;
 
   while(curr != NULL) {
@@ -25,7 +26,6 @@ void list_free(list_t *l) {
     curr = curr->next;
     free(tmp);
   }
-  l->head = NULL;
 }
 
 void list_print(list_t *l) {
@@ -126,25 +126,32 @@ void list_add_at_index(list_t *l, elem value, int index) {
 
 elem list_remove_from_back(list_t *l) { 
     node_t *curr = l->head;
-    
+    node_t * prev = NULL;
+    //Empty list
+
     if (curr==NULL)
-        return -1; 
-        
+      return -1; 
+
+    //1 Element
+
     while(curr->next->next != NULL) {
         curr = curr->next;
     }
-    
+    elem value = curr->next->value;
     free(curr->next);
     curr->next = NULL;
+    return value;
+
 }
     
 elem list_remove_from_front(list_t *l) { 
     
     node_t *curr = l->head;
-    elem value = curr->value;
-    
+
     if(curr == NULL)
         return -1;
+
+    elem value = curr->value;
     
     l->head = curr->next;
     
@@ -154,11 +161,15 @@ elem list_remove_from_front(list_t *l) {
     
 elem list_remove_at_index(list_t *l, int index) {
     
+    if (l->head==NULL)
+    {
+      return -1;
+    }
+
     node_t *curr = l->head->next;
     node_t *prev = l->head;
     int count = 2;
     int deleted_node;
-    
     if (index<=0) {
         return -1;
     }
@@ -174,7 +185,6 @@ elem list_remove_at_index(list_t *l, int index) {
         prev = prev->next;
         count = count + 1;
     }
-
     if(count == index){
         prev->next = curr->next;
         deleted_node = curr-> value;
@@ -182,6 +192,7 @@ elem list_remove_at_index(list_t *l, int index) {
         free(curr);
         return deleted_node;
     }
+    printf("Error! Index not in list\n");
     return -1;
 }
      
